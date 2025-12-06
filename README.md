@@ -62,11 +62,12 @@ LootAlert is a lightweight addon for World of Warcraft Vanilla (1.12.1) that hel
 
 For bug reports, feature requests, or questions:
 - Create an issue on GitHub
-- Post in the addon discussion thread
 
 ## Credits
 
-Created for the WoW Vanilla community. Special thanks to all raiders who tested and provided feedback.
+Developed for the WoW Vanilla community.
+Thanks to everyone who helps testing.
+Special thanks to all the raids and those who keep it together.
 
 ## License
 
