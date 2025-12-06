@@ -32,7 +32,7 @@ LootAlert is a lightweight addon for World of Warcraft Vanilla (1.12.1) that hel
 
 ### Quick Add Item
 
-**/la add [shift+click item] to your watch list!**
+**/la add [shift+click item] - to your watch list!**
 
 ```
 /la                    - Show help menu
