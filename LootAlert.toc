@@ -1,0 +1,7 @@
+## Interface: 11200
+## Version: 1.0
+## Title: LootAlert
+## Notes: Add any item and get notified when it drops or gets posted in raid.
+## Author: Your Name
+## SavedVariables: LootAlert_Config
+LootAlert.xml

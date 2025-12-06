@@ -1,0 +1,198 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
+	<Script file="LootAlert.lua"/>
+
+	<!-- Main Event Frame -->
+	<Frame name="LootAlertFrame" parent="UIParent">
+		<Scripts>
+			<OnLoad>
+				LootAlert_OnLoad();
+			</OnLoad>
+			<OnEvent>
+				LootAlert_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
+			</OnEvent>
+		</Scripts>
+	</Frame>
+
+	<!-- Alert Frame -->
+	<Frame name="LootAlert_AlertFrame" parent="UIParent" frameStrata="HIGH" toplevel="true" movable="true" enableMouse="true" hidden="true">
+		<Size>
+			<AbsDimension x="220" y="145"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER">
+				<Offset>
+					<AbsDimension x="0" y="100"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="" tile="false">
+			<BackgroundInsets>
+				<AbsInset left="0" right="0" top="0" bottom="0"/>
+			</BackgroundInsets>
+		</Backdrop>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<!-- Item Icon Border (behind icon) -->
+				<Texture name="$parent_IconBorder">
+					<Size>
+						<AbsDimension x="46" y="46"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parent" relativePoint="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-35"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<Color r="1.0" g="1.0" b="1.0"/>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<!-- "DROPPED!" Label -->
+				<FontString name="$parent_DroppedLabel" inherits="GameFontNormalLarge">
+					<Size>
+						<AbsDimension x="200" y="20"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-8"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<Color r="1.0" g="0.82" b="0.0"/>
+				</FontString>
+
+				<!-- Item Icon (placeholder - wird durch Lua dynamisch erstellt) -->
+				<Texture name="$parent_Icon">
+					<Size>
+						<AbsDimension x="42" y="42"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parent" relativePoint="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-33"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<!-- Item Name Label (optional, für Debugging) -->
+				<FontString name="$parent_ItemNameLabel" inherits="GameFontNormalSmall">
+					<Size>
+						<AbsDimension x="200" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parent" relativePoint="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-85"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<Color r="0.7" g="0.7" b="0.7"/>
+				</FontString>
+
+				<!-- Item Name -->
+				<FontString name="$parent_ItemName" inherits="GameFontNormal">
+					<Size>
+						<AbsDimension x="200" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parent" relativePoint="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-85"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+
+			</Layer>
+		</Layers>
+		<Frames>
+			<!-- Close Button -->
+			<Button name="$parent_CloseButton" inherits="UIPanelCloseButton">
+				<Size>
+					<AbsDimension x="30" y="30"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						LootAlert_HideAlert();
+					</OnClick>
+				</Scripts>
+			</Button>
+
+			<!-- Remove from List Button -->
+			<Button name="$parent_RemoveButton" inherits="GameMenuButtonTemplate" text="Remove">
+				<Size>
+					<AbsDimension x="90" y="22"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM">
+						<Offset>
+							<AbsDimension x="0" y="6"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						LootAlert_RemoveButton_OnClick();
+					</OnClick>
+				</Scripts>
+			</Button>
+
+			<!-- Invisible Button for Icon Click/Hover -->
+			<Button name="$parent_IconButton">
+				<Size>
+					<AbsDimension x="40" y="40"/>
+				</Size>
+				<Anchors>
+					<Anchor point="CENTER" relativeTo="$parent_Icon">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnEnter>
+						LootAlert_IconButton_OnEnter();
+					</OnEnter>
+					<OnLeave>
+						GameTooltip:Hide();
+					</OnLeave>
+					<OnClick>
+						LootAlert_IconButton_OnClick(arg1);
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnMouseDown>
+				LootAlert_AlertFrame_OnMouseDown(arg1);
+			</OnMouseDown>
+			<OnMouseUp>
+				LootAlert_AlertFrame_OnMouseUp(arg1);
+			</OnMouseUp>
+			<OnUpdate>
+				LootAlert_AlertFrame_OnUpdate(arg1);
+			</OnUpdate>
+		</Scripts>
+	</Frame>
+
+	<!-- Hidden Tooltip for parsing -->
+	<GameTooltip name="LootAlert_Tooltip" frameStrata="TOOLTIP" hidden="true" inherits="GameTooltipTemplate">
+		<Scripts>
+			<OnLoad>
+				this:SetOwner(this, "ANCHOR_NONE")
+			</OnLoad>
+		</Scripts>
+	</GameTooltip>
+</Ui>
